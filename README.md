@@ -1,4 +1,4 @@
-# INFO
+# Info
 
 - Mars Rover application which uses command line interface
 
