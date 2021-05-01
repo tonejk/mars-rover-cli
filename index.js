@@ -1,54 +1,52 @@
 const readline = require("readline-sync");
 
-// H4.2 Mars rover class & H4.3 Two Rovers (Example only)
-class MarsRover {
-    constructor(x,y,name) {
-        this.x = x;
-        this.y = y;
-        this.direction = "SOUTH";
-        this.log = [];
-        this.name = name;
-    }
+// // Mars rover class & Two Rovers (Example only)
+// class MarsRover {
+//     constructor(x,y,name) {
+//         this.x = x;
+//         this.y = y;
+//         this.direction = "SOUTH";
+//         this.log = [];
+//         this.name = name;
+//     }
     
-        moveForward() {
-            this.x = 5;
-            this.y = 1;
-            this.y = this.y + 1;
-            console.log(`Moving towards ${this.direction} to coordinates ${this.x},${this.y}`);
-            this.log.push(`${this.x},${this.y}`);
-        }
+//         moveForward() {
+//             this.x = 5;
+//             this.y = 1;
+//             this.y = this.y + 1;
+//             console.log(`Moving towards ${this.direction} to coordinates ${this.x},${this.y}`);
+//             this.log.push(`${this.x},${this.y}`);
+//         }
 
-        turnLeft() {
-            this.direction = "WEST";
-            console.log(`Turning right to face ${this.direction}`);
-        }
+//         turnLeft() {
+//             this.direction = "WEST";
+//             console.log(`Turning right to face ${this.direction}`);
+//         }
 
-        turnRight() {
-            this.direction = "SOUTH";
-            console.log(`Turning left to face ${this.direction}`);
-        }
+//         turnRight() {
+//             this.direction = "SOUTH";
+//             console.log(`Turning left to face ${this.direction}`);
+//         }
 
-        printPosition() {
-            console.log(`Currently positioned in ${this.x},${this.y}`);
-        }
+//         printPosition() {
+//             console.log(`Currently positioned in ${this.x},${this.y}`);
+//         }
 
-        printLog() {
-            console.log(`Travel Log: ${this.log}`);
-        }
-}
+//         printLog() {
+//             console.log(`Travel Log: ${this.log}`);
+//         }
+// }
 
-// MarsRover Class instances
-const roverClass = new MarsRover();
-roverClass.moveForward();
-roverClass.turnLeft();
-roverClass.turnRight();
-roverClass.printPosition();
-roverClass.printLog();
+// // MarsRover Class instances
+// const roverClass = new MarsRover();
+// roverClass.moveForward();
+// roverClass.turnLeft();
+// roverClass.turnRight();
+// roverClass.printPosition();
+// roverClass.printLog();
 
-const roverClass2 = new MarsRover(3, 2, "TALOS");
-console.log(roverClass2);
-
-
+// const roverClass2 = new MarsRover(3, 2, "TALOS");
+// console.log(roverClass2);
 
 
 
@@ -57,7 +55,9 @@ console.log(roverClass2);
 
 
 
-// H4.1 Mars Rover, 4.5 Collision detection, H4.7 Command line interface
+
+
+// Mars Rover, Collision detection, Command line interface
 
 // Mars rover object
 const rover = {
@@ -67,39 +67,55 @@ const rover = {
     
     moveForward: function() {
         if(rover.direction[i] === "SOUTH") {
-            if(rover.position.y < 10) {
-                rover.position.y = rover.position.y + 1;
-                updateTravelLog();
-                moveRoverMessage();
-            } else {
-                console.log("End of grid, turn around.");
-            }
+            this.moveForwardSouth();
         } else if (rover.direction[i] === "WEST") {
-            if(rover.position.x > 0) {
-                rover.position.x = rover.position.x - 1;
-                updateTravelLog();
-                moveRoverMessage();
-            } else {
-                console.log("End of grid, turn around.");
-            }
+            this.moveForwardWest();
         } else if (rover.direction[i] === "NORTH") {
-            if(rover.position.y > 0) {
-                rover.position.y = rover.position.y - 1;
-                updateTravelLog();
-                moveRoverMessage();
-            } else {
-                console.log("End of grid, turn around.");
-            }
+            this.moveForwardNorth();
         } else if (rover.direction[i] === "EAST") {
-            if(rover.position.x < 10) {
-                rover.position.x = rover.position.x + 1;
-                updateTravelLog();
-                moveRoverMessage();
-            } else {
-                console.log("End of grid, turn around.");
-            }
-
+            this.moveForwardEast();
         }
+    },
+
+    moveForwardSouth: function () {
+        if(rover.position.y < 10) {
+            rover.position.y = rover.position.y + 1;
+            this.afterMoveForward();
+        } else {
+            this.printEndOfGrid();
+        }
+    },
+
+    moveForwardWest: function () {
+        if(rover.position.x > 0) {
+            rover.position.x = rover.position.x - 1;
+            this.afterMoveForward();
+        } else {
+            this.printEndOfGrid();
+        }
+    },
+
+    moveForwardNorth: function () {
+        if(rover.position.y > 0) {
+            rover.position.y = rover.position.y - 1;
+            this.afterMoveForward();
+        } else {
+            this.printEndOfGrid();
+        }
+    },
+
+    moveForwardEast: function () {
+        if(rover.position.x < 10) {
+            rover.position.x = rover.position.x + 1;
+            this.afterMoveForward();
+        } else {
+            this.printEndOfGrid();
+        }
+    },
+
+    afterMoveForward: function () {
+        updateTravelLog();
+        moveRoverMessage();
     },
 
     turnRight: function () {
@@ -116,6 +132,10 @@ const rover = {
 
     printPosition: function () {
         console.log(`Currently positioned in ${rover.position.x},${rover.position.y}`);
+    },
+
+    printEndOfGrid: function () {
+        console.log("End of grid, turn around.");
     },
 
     printLog: function () {
