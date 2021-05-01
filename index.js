@@ -1,78 +1,20 @@
 const readline = require("readline-sync");
 
-// // Mars rover class & Two Rovers (Example only)
-// class MarsRover {
-//     constructor(x,y,name) {
-//         this.x = x;
-//         this.y = y;
-//         this.direction = "SOUTH";
-//         this.log = [];
-//         this.name = name;
-//     }
-    
-//         moveForward() {
-//             this.x = 5;
-//             this.y = 1;
-//             this.y = this.y + 1;
-//             console.log(`Moving towards ${this.direction} to coordinates ${this.x},${this.y}`);
-//             this.log.push(`${this.x},${this.y}`);
-//         }
-
-//         turnLeft() {
-//             this.direction = "WEST";
-//             console.log(`Turning right to face ${this.direction}`);
-//         }
-
-//         turnRight() {
-//             this.direction = "SOUTH";
-//             console.log(`Turning left to face ${this.direction}`);
-//         }
-
-//         printPosition() {
-//             console.log(`Currently positioned in ${this.x},${this.y}`);
-//         }
-
-//         printLog() {
-//             console.log(`Travel Log: ${this.log}`);
-//         }
-// }
-
-// // MarsRover Class instances
-// const roverClass = new MarsRover();
-// roverClass.moveForward();
-// roverClass.turnLeft();
-// roverClass.turnRight();
-// roverClass.printPosition();
-// roverClass.printLog();
-
-// const roverClass2 = new MarsRover(3, 2, "TALOS");
-// console.log(roverClass2);
-
-
-
-
-
-
-
-
-
-
-// Mars Rover, Collision detection, Command line interface
-
 // Mars rover object
 const rover = {
     position: {x: 5, y: 0},
+    index: 0,
     direction: ["SOUTH", "WEST", "NORTH", "EAST"],
     log: [],
     
     moveForward: function() {
-        if(rover.direction[i] === "SOUTH") {
+        if(rover.direction[this.index] === "SOUTH") {
             this.moveForwardSouth();
-        } else if (rover.direction[i] === "WEST") {
+        } else if (rover.direction[this.index] === "WEST") {
             this.moveForwardWest();
-        } else if (rover.direction[i] === "NORTH") {
+        } else if (rover.direction[this.index] === "NORTH") {
             this.moveForwardNorth();
-        } else if (rover.direction[i] === "EAST") {
+        } else if (rover.direction[this.index] === "EAST") {
             this.moveForwardEast();
         }
     },
@@ -113,21 +55,56 @@ const rover = {
         }
     },
 
+    /**
+     * Actions to do after moving rover forward
+     * 
+     * @return void
+     */
     afterMoveForward: function () {
-        updateTravelLog();
-        moveRoverMessage();
+        this.updateTravelLog();
+        this.moveRoverMessage();
     },
 
     turnRight: function () {
-        updateTravelLog();
-        let newDirection = nextItem();  
+        this.updateTravelLog();
+        let newDirection = this.setRoverDirectionRight();
         console.log(`Turning right to face ${newDirection}`);
     },
 
     turnLeft: function () {
-        updateTravelLog();
-        let newDirection = prevItem();
+        this.updateTravelLog();
+        let newDirection = this.setRoverDirectionLeft();
         console.log(`Turning left to face ${newDirection}`);
+    },
+
+    // Next array item
+    setRoverDirectionRight: function () {
+        this.index = this.index + 1; // increase i by one
+        this.index = this.index % rover.direction.length; // if we've gone too high, start from `0` again
+        
+        return rover.direction[this.index]; // give us back the item of where we are now
+    },
+
+    // Previous array item
+    setRoverDirectionLeft: function () {
+        if (this.index === 0) { // i would become 0
+            this.index = rover.direction.length; // so put it at the other end of the array
+        }
+
+        this.index = this.index - 1; // decrease by one
+        
+        return rover.direction[this.index]; // give us back the item of where we are now
+    },
+
+    // Travel Log update
+    updateTravelLog: function () {
+        let newPosition = rover.position.x + "," + rover.position.y;
+        rover.log.push(newPosition);
+    },
+
+    // Move Rover
+    moveRoverMessage: function () {
+        console.log(`Moving towards to ${rover.direction[this.index]} coordinates ${rover.position.x},${rover.position.y}`)
     },
 
     printPosition: function () {
@@ -145,37 +122,6 @@ const rover = {
         });
     },
 };
-
-// Global index value 
-let i = 0;
-
-// Next array item
-function nextItem() {
-    i = i + 1; // increase i by one
-    i = i % rover.direction.length; // if we've gone too high, start from `0` again
-    return rover.direction[i]; // give us back the item of where we are now
-}
-
-// Previous array item
-function prevItem() {
-    if (i === 0) { // i would become 0
-        i = rover.direction.length; // so put it at the other end of the array
-    }
-    i = i - 1; // decrease by one
-    return rover.direction[i]; // give us back the item of where we are now
-}
-
-// Travel Log update
-updateTravelLog = () => {
-    let newPosition = rover.position.x + "," + rover.position.y;
-    rover.log.push(newPosition);
-}
-
-// Move Rover
-moveRoverMessage = () => {
-    console.log(`Moving towards to ${rover.direction[i]} coordinates ${rover.position.x},${rover.position.y}`)
-}
-
 
 // Print list of commands.
 const listCommands = () => {
