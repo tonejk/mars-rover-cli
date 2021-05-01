@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Toni Suutari",
+  "author": "tonejk",
   "license": "ISC",
   "dependencies": {
     "readline-sync": "^1.4.10"
