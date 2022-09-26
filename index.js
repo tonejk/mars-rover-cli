@@ -131,6 +131,7 @@ const listCommands = () => {
     + 'TURN LEFT' + '\n'
     + 'PRINT POSITION' + '\n'
     + 'PRINT LOG' + '\n'
+    + 'QUIT' + '\n'
     );
 }
 
@@ -154,8 +155,11 @@ const app = () => {
             case 'PRINT LOG':
                 rover.printLog();
                 break;
+            case 'QUIT':
+                console.log('Program closed. Bye!');
+                return process.exit(0);
             default:
-                console.log('Invalid command.')
+                console.log('Invalid command.');
         }
     }
 }
